@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TODO List APP</string>
+    <string name="things_to_do">Things ToDo</string>
+    <string name="next_underlined"><u>next</u></string>
 </resources>
