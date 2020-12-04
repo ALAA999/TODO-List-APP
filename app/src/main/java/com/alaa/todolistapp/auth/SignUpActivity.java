@@ -21,6 +21,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
         binding.createProfile.setOnClickListener(this);
         binding.login.setOnClickListener(this);
     }

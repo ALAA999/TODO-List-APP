@@ -10,6 +10,7 @@ import com.alaa.todolistapp.MainActivity;
 import com.alaa.todolistapp.R;
 import com.alaa.todolistapp.databinding.ActivityLogInBinding;
 import com.alaa.todolistapp.databinding.ActivitySignUpBinding;
+import com.alaa.todolistapp.list.ListActivity;
 
 public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -18,10 +19,10 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_log_in);
         binding = ActivityLogInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
         binding.login.setOnClickListener(this);
         binding.createProfile.setOnClickListener(this);
     }
@@ -32,6 +33,7 @@ public class LogInActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(this, SignUpActivity.class));
         } else if (view.getId() == R.id.login) {
             // TODO login firebase call
+            startActivity(new Intent(this, ListActivity.class));
         }
     }
 }

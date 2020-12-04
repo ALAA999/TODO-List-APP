@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:background="@drawable/rounded_edittext_shape"
-            android:hint="@string/passwrod"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:padding="12dp"
             android:textColor="@color/white"
@@ -71,6 +71,7 @@
             android:layout_marginTop="39dp"
             android:background="@drawable/rounded_edittext_shape"
             android:backgroundTint="@color/orange"
+            android:foreground="?selectableItemBackground"
             android:text="@string/create_your_profile"
             android:textColor="@color/white" />
 

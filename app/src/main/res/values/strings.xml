@@ -8,8 +8,12 @@
     <string name="create_your_profile">Create your profile</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="login">Log In</string>
-    <string name="passwrod">Password</string>
+    <string name="password">Password</string>
     <string name="welcome_back">Welcome back!</string>
     <string name="do_not_have_account">Don\'t have an account?</string>
     <string name="forgot_your_password">Forgot your password?</string>
+    <string name="lists_todo">Lists ToDo</string>
+    <string name="search">Search</string>
+    <string name="lists">Lists:</string>
+    <string name="create_new_list">Create new list here</string>
 </resources>
