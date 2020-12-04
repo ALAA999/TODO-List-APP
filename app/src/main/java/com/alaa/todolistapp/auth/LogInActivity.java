@@ -8,29 +8,30 @@ import android.view.View;
 
 import com.alaa.todolistapp.MainActivity;
 import com.alaa.todolistapp.R;
-import com.alaa.todolistapp.databinding.ActivityMainBinding;
+import com.alaa.todolistapp.databinding.ActivityLogInBinding;
 import com.alaa.todolistapp.databinding.ActivitySignUpBinding;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
+public class LogInActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ActivitySignUpBinding binding;
+    private ActivityLogInBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
+        setContentView(R.layout.activity_log_in);
+        binding = ActivityLogInBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-        binding.createProfile.setOnClickListener(this);
         binding.login.setOnClickListener(this);
+        binding.createProfile.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.create_profile) {
-            // TODO sign up firebase call
+            startActivity(new Intent(this, SignUpActivity.class));
         } else if (view.getId() == R.id.login) {
-            onBackPressed();
+            // TODO login firebase call
         }
     }
 }
