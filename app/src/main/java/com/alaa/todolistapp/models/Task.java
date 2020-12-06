@@ -1,10 +1,10 @@
 package com.alaa.todolistapp.models;
 
-public class ToDoList {
-    // dummy data for testing purposes
+public class Task {
+
     private String id = "1";
-    private String name = "Home";
-    private String tasksNumber = "3 tasks";
+    private String name = "Meet with client";
+    private boolean isChecked = false;
 
     public String getId() {
         return id;
@@ -22,11 +22,11 @@ public class ToDoList {
         this.name = name;
     }
 
-    public String getTasksNumber() {
-        return tasksNumber;
+    public boolean isChecked() {
+        return isChecked;
     }
 
-    public void setTasksNumber(String tasksNumber) {
-        this.tasksNumber = tasksNumber;
+    public void setChecked(boolean checked) {
+        isChecked = checked;
     }
 }

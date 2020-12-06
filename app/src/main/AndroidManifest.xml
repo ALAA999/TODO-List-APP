@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TODOListAPP">
-        <activity android:name=".list.ListActivity"></activity>
+        <activity android:name=".list.DailyActivity"></activity>
+        <activity android:name=".list.ListActivity" />
         <activity android:name=".auth.LogInActivity" />
         <activity android:name=".auth.SignUpActivity" />
         <activity android:name=".MainActivity">

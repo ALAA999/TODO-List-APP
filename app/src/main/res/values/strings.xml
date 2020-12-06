@@ -16,4 +16,7 @@
     <string name="search">Search</string>
     <string name="lists">Lists:</string>
     <string name="create_new_list">Create new list here</string>
+    <string name="personal_list">Personal List</string>
+    <string name="create_new_task">Create new task here</string>
+    <string name="delete">Delete</string>
 </resources>
