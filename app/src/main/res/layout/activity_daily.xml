@@ -23,8 +23,23 @@
             android:layout_marginTop="12dp"
             android:orientation="vertical">
 
+            <EditText
+                android:id="@+id/task_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/rounded_edittext_shape"
+                android:drawableStart="@drawable/ic_baseline_search_24"
+                android:drawablePadding="8dp"
+                android:hint="@string/search"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white" />
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
+                android:layout_marginTop="16dp"
                 android:layout_height="wrap_content">
 
                 <TextView
