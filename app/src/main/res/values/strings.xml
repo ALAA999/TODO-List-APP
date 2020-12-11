@@ -19,4 +19,6 @@
     <string name="personal_list">Personal List</string>
     <string name="create_new_task">Create new task here</string>
     <string name="delete">Delete</string>
+    <string name="auth_faild">Authentication failed.</string>
+    <string name="field_required">Field required</string>
 </resources>
