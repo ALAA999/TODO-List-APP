@@ -8,6 +8,7 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.alaa.todolistapp.R;
+import com.alaa.todolistapp.common.BaseActivity;
 import com.alaa.todolistapp.databinding.ActivitySignUpBinding;
 import com.alaa.todolistapp.list.ListActivity;
 import com.alaa.todolistapp.utils.AppController;
@@ -15,30 +16,27 @@ import com.alaa.todolistapp.utils.UIUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kaopiz.kprogresshud.KProgressHUD;
 
-public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
+public class SignUpActivity extends BaseActivity implements View.OnClickListener {
 
     private ActivitySignUpBinding binding;
     private FirebaseAuth mAuth;
-    private KProgressHUD progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         binding = ActivitySignUpBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        super.setRootView(binding.getRoot());
+        super.onCreate(savedInstanceState);
 
-        progressDialog = KProgressHUD.create(this).setDimAmount(0.5f);
         mAuth = FirebaseAuth.getInstance();
-        binding.createProfile.setOnClickListener(this);
-        binding.login.setOnClickListener(this);
+
+        super.setOnClickListeners(new View[]{binding.createProfile, binding.login}, this);
     }
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.create_profile) {
             if (UIUtil.EditTextsFilled(new EditText[]{binding.email, binding.password}, this)) {
-                signUp(binding.email.getText().toString(), binding.email.getText().toString());
+                signUp(binding.email.getText().toString(), binding.password.getText().toString());
             }
         } else if (view.getId() == R.id.login) {
             onBackPressed();

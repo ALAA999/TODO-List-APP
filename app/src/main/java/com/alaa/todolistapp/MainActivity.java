@@ -8,19 +8,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alaa.todolistapp.auth.LogInActivity;
 import com.alaa.todolistapp.auth.SignUpActivity;
+import com.alaa.todolistapp.common.BaseActivity;
 import com.alaa.todolistapp.databinding.ActivityMainBinding;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        super.setRootView(binding.getRoot());
+        super.onCreate(savedInstanceState);
 
         binding.next.setOnClickListener(this);
     }
