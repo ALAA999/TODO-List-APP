@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.alaa.todolistapp.R;
+import com.alaa.todolistapp.common.BaseActivity;
 import com.alaa.todolistapp.common.Constants;
 import com.alaa.todolistapp.databinding.ActivityListBinding;
+import com.alaa.todolistapp.databinding.ActivityLogInBinding;
 import com.alaa.todolistapp.list.adapter.ToDoListAdapter;
 import com.alaa.todolistapp.models.ToDoList;
 import com.alaa.todolistapp.utils.AppController;
@@ -28,7 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListActivity extends AppCompatActivity implements View.OnClickListener, ToDoListAdapter.ListItemClickListener, TextWatcher {
+public class ListActivity extends BaseActivity implements View.OnClickListener, ToDoListAdapter.ListItemClickListener, TextWatcher {
 
     private ActivityListBinding binding;
     private List<ToDoList> toDoLists = new ArrayList<>(), searchedToDoList = new ArrayList<>();
@@ -37,10 +39,9 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         binding = ActivityListBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+        super.setRootView(binding.getRoot());
+        super.onCreate(savedInstanceState);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         binding.toolbar.back.setOnClickListener(this);
@@ -48,6 +49,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         binding.listSearch.addTextChangedListener(this);
         binding.toolbar.pageTitle.setText(getString(R.string.lists_todo));
 
+        progressDialog.show();
         setToDoListAdapter(toDoLists);
         setToDoListsListener();
     }
@@ -56,7 +58,10 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
-                toDoLists.add(dataSnapshot.getValue(ToDoList.class));
+                progressDialog.dismiss();
+                ToDoList toDoList = dataSnapshot.getValue(ToDoList.class);
+                toDoList.setId(dataSnapshot.getKey());
+                toDoLists.add(toDoList);
                 toDoListAdapter.notifyDataSetChanged();
                 binding.todoList.scrollToPosition(toDoLists.size() - 1);
             }
@@ -68,7 +73,15 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                ToDoList toDoList = dataSnapshot.getValue(ToDoList.class);
+                toDoList.setId(dataSnapshot.getKey());
+                for (int i = 0; i < toDoLists.size(); i++) {
+                    if (toDoLists.get(i).getId().equals(toDoList.getId())) {
+                        toDoLists.remove(i);
+                        toDoListAdapter.notifyItemRemoved(i);
+                        break;
+                    }
+                }
             }
 
             @Override
@@ -118,13 +131,14 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
     public void pushToDoToFirebase(String name) {
         ToDoList toDoList = new ToDoList();
         toDoList.setName(name);
-        mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(toDoList.getName()).setValue(toDoList);
+        String key = mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).push().getKey();
+        mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(key).setValue(toDoList);
     }
 
     @Override
     public void onToDoListClicked(int position) {
         Intent intent = new Intent(this, DailyActivity.class);
-//        intent.putExtra(Constants.TODO_LIST_ID, toDoLists.get(position).getId());
+        intent.putExtra(Constants.TODO_LIST_ID, toDoLists.get(position).getId());
         startActivity(intent);
     }
 

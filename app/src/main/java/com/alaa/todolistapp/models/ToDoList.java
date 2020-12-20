@@ -4,11 +4,20 @@ import java.util.ArrayList;
 
 public class ToDoList {
 
+    private String id;
     private String name;
     private ArrayList<Task> tasks = new ArrayList<>();
 
     public ToDoList() {
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
