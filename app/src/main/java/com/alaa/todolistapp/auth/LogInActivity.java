@@ -2,6 +2,7 @@ package com.alaa.todolistapp.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -45,7 +46,7 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
                 .addOnCompleteListener(this, task -> {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
-                        AppController.getInstance().getAppPreferences().setUser(mAuth.getCurrentUser());
+                        AppController.getInstance().getAppPreferences().setUserUId(mAuth.getCurrentUser().getUid());
                         Intent i = new Intent(LogInActivity.this, ListActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);

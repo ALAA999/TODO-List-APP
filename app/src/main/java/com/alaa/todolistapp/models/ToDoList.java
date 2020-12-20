@@ -1,17 +1,14 @@
 package com.alaa.todolistapp.models;
 
+import java.util.ArrayList;
+
 public class ToDoList {
-    // dummy data for testing purposes
-    private String id = "1";
-    private String name = "Home";
-    private String tasksNumber = "3 tasks";
 
-    public String getId() {
-        return id;
-    }
+    private String name;
+    private ArrayList<Task> tasks = new ArrayList<>();
 
-    public void setId(String id) {
-        this.id = id;
+    public ToDoList() {
+
     }
 
     public String getName() {
@@ -22,11 +19,11 @@ public class ToDoList {
         this.name = name;
     }
 
-    public String getTasksNumber() {
-        return tasksNumber;
+    public ArrayList<Task> getTasks() {
+        return tasks;
     }
 
-    public void setTasksNumber(String tasksNumber) {
-        this.tasksNumber = tasksNumber;
+    public void setTasks(ArrayList<Task> tasks) {
+        this.tasks = tasks;
     }
 }

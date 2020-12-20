@@ -9,7 +9,7 @@ import com.google.gson.Gson;
 
 public class AppPreferences {
 
-    public final static String USER = "user";
+    public final static String USER_UID = "user_uid";
 
     private static final String PREF_NAME = "AppSettingsPreferences";
 
@@ -26,17 +26,13 @@ public class AppPreferences {
         editor = pref.edit();
     }
 
-    public FirebaseUser getUser() {
-        Gson gson = new Gson();
-        String json = pref.getString(USER, "");
-        return gson.fromJson(json, FirebaseUser.class);
+    public String getUserUId() {
+        return pref.getString(USER_UID, "");
     }
 
-    public void setUser(FirebaseUser user) {
-        Gson gson = new Gson();
-        String json = gson.toJson(user);
-        editor.putString(USER, json);
-        editor.commit();
+    public void setUserUId(String userUId) {
+        editor.putString(USER_UID, userUId);
+        editor.apply();
     }
 
     public void clean() {

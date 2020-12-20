@@ -16,9 +16,14 @@
     <string name="search">Search</string>
     <string name="lists">Lists:</string>
     <string name="create_new_list">Create new list here</string>
+    <string name="create">Create</string>
+    <string name="task_name">Task name</string>
+    <string name="list_name">List name</string>
     <string name="personal_list">Personal List</string>
     <string name="create_new_task">Create new task here</string>
     <string name="delete">Delete</string>
     <string name="auth_faild">Authentication failed.</string>
     <string name="field_required">Field required</string>
+    <string name="cancel">Cancel</string>
+    <string name="tasks">%1$d tasks</string>
 </resources>

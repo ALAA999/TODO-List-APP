@@ -49,7 +49,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 .addOnCompleteListener(this, task -> {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
-                        AppController.getInstance().getAppPreferences().setUser(mAuth.getCurrentUser());
+                        AppController.getInstance().getAppPreferences().setUserUId(mAuth.getCurrentUser().getUid());
                         Intent i = new Intent(SignUpActivity.this, ListActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);

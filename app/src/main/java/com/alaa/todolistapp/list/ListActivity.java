@@ -1,18 +1,29 @@
 package com.alaa.todolistapp.list;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 
 import com.alaa.todolistapp.R;
 import com.alaa.todolistapp.common.Constants;
 import com.alaa.todolistapp.databinding.ActivityListBinding;
 import com.alaa.todolistapp.list.adapter.ToDoListAdapter;
 import com.alaa.todolistapp.models.ToDoList;
+import com.alaa.todolistapp.utils.AppController;
+import com.alaa.todolistapp.utils.UIUtil;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,8 +31,9 @@ import java.util.List;
 public class ListActivity extends AppCompatActivity implements View.OnClickListener, ToDoListAdapter.ListItemClickListener, TextWatcher {
 
     private ActivityListBinding binding;
-    private List<ToDoList> toDoLists, searchedToDoList;
+    private List<ToDoList> toDoLists = new ArrayList<>(), searchedToDoList = new ArrayList<>();
     private ToDoListAdapter toDoListAdapter;
+    private DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,20 +41,46 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         binding = ActivityListBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         binding.toolbar.back.setOnClickListener(this);
         binding.createList.setOnClickListener(this);
         binding.listSearch.addTextChangedListener(this);
         binding.toolbar.pageTitle.setText(getString(R.string.lists_todo));
 
-        // dummy data added to list for filling up the screen until connecting to firebase
-        toDoLists = new ArrayList<>();
-        searchedToDoList = new ArrayList<>();
-        toDoLists.add(new ToDoList());
-        toDoLists.add(new ToDoList());
-        toDoLists.add(new ToDoList());
-        toDoLists.add(new ToDoList());
         setToDoListAdapter(toDoLists);
+        setToDoListsListener();
+    }
+
+    private void setToDoListsListener() {
+        mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
+                toDoLists.add(dataSnapshot.getValue(ToDoList.class));
+                toDoListAdapter.notifyDataSetChanged();
+                binding.todoList.scrollToPosition(toDoLists.size() - 1);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void setToDoListAdapter(List<ToDoList> toDoList) {
@@ -55,14 +93,38 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         if (view.getId() == R.id.back) {
             onBackPressed();
         } else if (view.getId() == R.id.create_list) {
-
+            showNewListDialog();
         }
+    }
+
+    private void showNewListDialog() {
+        final EditText listEditText = new EditText(this);
+        listEditText.setHint(R.string.list_name);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.create_new_list))
+                .setView(listEditText)
+                .setPositiveButton(getString(R.string.create), null)
+                .setNegativeButton(getString(R.string.cancel), null)
+                .create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            if (UIUtil.EditTextsFilled(new EditText[]{listEditText}, ListActivity.this)) {
+                dialog.dismiss();
+                pushToDoToFirebase(listEditText.getText().toString());
+            }
+        });
+    }
+
+    public void pushToDoToFirebase(String name) {
+        ToDoList toDoList = new ToDoList();
+        toDoList.setName(name);
+        mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(toDoList.getName()).setValue(toDoList);
     }
 
     @Override
     public void onToDoListClicked(int position) {
         Intent intent = new Intent(this, DailyActivity.class);
-        intent.putExtra(Constants.TODO_LIST_ID, toDoLists.get(position).getId());
+//        intent.putExtra(Constants.TODO_LIST_ID, toDoLists.get(position).getId());
         startActivity(intent);
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alaa.todolistapp.R;
 import com.alaa.todolistapp.databinding.ItemTodoListBinding;
 import com.alaa.todolistapp.models.ToDoList;
 
@@ -36,7 +37,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final ToDoList toDoList = list.get(i);
         viewHolder.binding.name.setText(toDoList.getName());
-        viewHolder.binding.tasksNumber.setText(toDoList.getTasksNumber());
+        viewHolder.binding.tasksNumber.setText(context.getString(R.string.tasks, toDoList.getTasks().size()));
     }
 
     @Override
