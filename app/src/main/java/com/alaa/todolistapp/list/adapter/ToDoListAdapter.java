@@ -1,6 +1,7 @@
 package com.alaa.todolistapp.list.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final ToDoList toDoList = list.get(i);
         viewHolder.binding.name.setText(toDoList.getName());
+        Log.e("task" , toDoList.getTasks().toString());
         viewHolder.binding.tasksNumber.setText(context.getString(R.string.tasks, toDoList.getTasks().size()));
     }
 

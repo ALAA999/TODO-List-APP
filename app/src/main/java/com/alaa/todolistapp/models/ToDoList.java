@@ -1,12 +1,13 @@
 package com.alaa.todolistapp.models;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ToDoList {
 
     private String id;
     private String name;
-    private ArrayList<Task> tasks = new ArrayList<>();
+    private HashMap<String, Task> tasks = new HashMap<>();
 
     public ToDoList() {
 
@@ -28,11 +29,11 @@ public class ToDoList {
         this.name = name;
     }
 
-    public ArrayList<Task> getTasks() {
+    public HashMap<String, Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(ArrayList<Task> tasks) {
+    public void setTasks(HashMap<String, Task> tasks) {
         this.tasks = tasks;
     }
 }

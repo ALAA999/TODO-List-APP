@@ -1,6 +1,7 @@
 package com.alaa.todolistapp.list;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.alaa.todolistapp.R;
@@ -20,6 +22,7 @@ import com.alaa.todolistapp.list.adapter.ToDoListAdapter;
 import com.alaa.todolistapp.models.Task;
 import com.alaa.todolistapp.models.ToDoList;
 import com.alaa.todolistapp.utils.AppController;
+import com.alaa.todolistapp.utils.UIUtil;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,30 +56,46 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
         binding.taskSearch.addTextChangedListener(this);
         binding.toolbar.pageTitle.setText(getString(R.string.lists_todo));
 
-        progressDialog.show();
         setTaskListAdapter(taskList);
         setDailyTasksListener();
     }
 
     private void setDailyTasksListener() {
-        mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(todoListId).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(todoListId).child(Constants.TASK_TABLE_NAME).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try {
-                    progressDialog.dismiss();
-                    taskList.clear();
-                    ToDoList toDoList = snapshot.getValue(ToDoList.class);
-                    binding.listName.setText(toDoList.getName());
-                    taskList.addAll(toDoList.getTasks());
-                    taskListAdapter.notifyDataSetChanged();
-                    binding.tasks.scrollToPosition(taskList.size() - 1);
-                }catch (Exception e) {
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
+                Task task = dataSnapshot.getValue(Task.class);
+                task.setId(dataSnapshot.getKey());
+                taskList.add(task);
+                taskListAdapter.notifyDataSetChanged();
+                binding.tasks.scrollToPosition(taskList.size() - 1);
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                ToDoList toDoList = dataSnapshot.getValue(ToDoList.class);
+                toDoList.setId(dataSnapshot.getKey());
+                for (int i = 0; i < taskList.size(); i++) {
+                    if (taskList.get(i).getId().equals(toDoList.getId())) {
+                        taskList.remove(i);
+                        taskListAdapter.notifyItemRemoved(i);
+                        break;
+                    }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -93,9 +112,7 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
         if (view.getId() == R.id.back) {
             onBackPressed();
         } else if (view.getId() == R.id.create_task) {
-            Intent intent = new Intent(this, ViewTaskActivity.class);
-            intent.putExtra(Constants.TODO_LIST_ID, todoListId);
-            startActivity(intent);
+            showNewTaskDialog();
         } else if (view.getId() == R.id.delete) {
             mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(todoListId).removeValue();
             onBackPressed();
@@ -103,6 +120,32 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
             binding.taskSearch.setVisibility(View.VISIBLE);
         }
     }
+
+    private void showNewTaskDialog() {
+        final EditText listEditText = new EditText(this);
+        listEditText.setHint(R.string.task_name);
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.create_new_task))
+                .setView(listEditText)
+                .setPositiveButton(getString(R.string.create), null)
+                .setNegativeButton(getString(R.string.cancel), null)
+                .create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            if (UIUtil.EditTextsFilled(new EditText[]{listEditText}, DailyActivity.this)) {
+                dialog.dismiss();
+                pushTaskToFirebase(listEditText.getText().toString());
+            }
+        });
+    }
+
+    public void pushTaskToFirebase(String name) {
+        Task task = new Task();
+        task.setName(name);
+        String key = mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(todoListId).push().getKey();
+        mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(todoListId).child(Constants.TASK_TABLE_NAME).child(key).setValue(task);
+    }
+
 
     @Override
     public void onTaskListClicked(int position) {

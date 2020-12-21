@@ -1,6 +1,7 @@
 package com.alaa.todolistapp.list.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.alaa.todolistapp.R;
 import com.alaa.todolistapp.databinding.ItemTaskListBinding;
 import com.alaa.todolistapp.databinding.ItemTodoListBinding;
+import com.alaa.todolistapp.list.ViewTaskActivity;
 import com.alaa.todolistapp.models.Task;
 import com.alaa.todolistapp.models.ToDoList;
 
@@ -69,14 +71,19 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             super(binding.getRoot());
             this.binding = binding;
             this.binding.taskLayout.setOnClickListener(this);
+            this.binding.edit.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            boolean isChecked = list.get(getAdapterPosition()).isChecked();
-            list.get(getAdapterPosition()).setChecked(!isChecked);
-            notifyItemChanged(getAdapterPosition());
-            mOnClickListener.onTaskListClicked(getAdapterPosition());
+            if (view.getId() == R.id.task_layout) {
+                boolean isChecked = list.get(getAdapterPosition()).isChecked();
+                list.get(getAdapterPosition()).setChecked(!isChecked);
+                notifyItemChanged(getAdapterPosition());
+                mOnClickListener.onTaskListClicked(getAdapterPosition());
+            } else if (view.getId() == R.id.edit) {
+                context.startActivity(new Intent(context, ViewTaskActivity.class));
+            }
         }
     }
 }

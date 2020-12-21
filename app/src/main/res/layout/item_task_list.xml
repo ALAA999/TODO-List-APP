@@ -33,4 +33,17 @@
         app:layout_constraintStart_toEndOf="@+id/check_image"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Meet with client" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_edittext_shape"
+        android:backgroundTint="@color/orange"
+        android:foreground="?selectableItemBackground"
+        android:text="@string/edit"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

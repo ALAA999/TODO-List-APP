@@ -27,6 +27,8 @@ public class ViewTaskActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View view) {
-
+        if (view.getId() == R.id.back) {
+            onBackPressed();
+        }
     }
 }

@@ -49,7 +49,6 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
         binding.listSearch.addTextChangedListener(this);
         binding.toolbar.pageTitle.setText(getString(R.string.lists_todo));
 
-        progressDialog.show();
         setToDoListAdapter(toDoLists);
         setToDoListsListener();
     }
@@ -58,7 +57,6 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
         mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
-                progressDialog.dismiss();
                 ToDoList toDoList = dataSnapshot.getValue(ToDoList.class);
                 toDoList.setId(dataSnapshot.getKey());
                 toDoLists.add(toDoList);
@@ -68,7 +66,16 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
-
+                ToDoList toDoList = dataSnapshot.getValue(ToDoList.class);
+                toDoList.setId(dataSnapshot.getKey());
+                for (int i = 0; i < toDoLists.size(); i++) {
+                    if (toDoLists.get(i).getId().equals(toDoList.getId())) {
+                        toDoLists.get(i).setName(toDoList.getName());
+                        toDoLists.get(i).setTasks(toDoList.getTasks());
+                        toDoListAdapter.notifyItemChanged(i);
+                        break;
+                    }
+                }
             }
 
             @Override
