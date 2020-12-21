@@ -58,7 +58,6 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
                 ToDoList toDoList = dataSnapshot.getValue(ToDoList.class);
-                toDoList.setId(dataSnapshot.getKey());
                 toDoLists.add(toDoList);
                 toDoListAdapter.notifyDataSetChanged();
                 binding.todoList.scrollToPosition(toDoLists.size() - 1);
@@ -67,7 +66,6 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
                 ToDoList toDoList = dataSnapshot.getValue(ToDoList.class);
-                toDoList.setId(dataSnapshot.getKey());
                 for (int i = 0; i < toDoLists.size(); i++) {
                     if (toDoLists.get(i).getId().equals(toDoList.getId())) {
                         toDoLists.get(i).setName(toDoList.getName());
@@ -81,7 +79,6 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 ToDoList toDoList = dataSnapshot.getValue(ToDoList.class);
-                toDoList.setId(dataSnapshot.getKey());
                 for (int i = 0; i < toDoLists.size(); i++) {
                     if (toDoLists.get(i).getId().equals(toDoList.getId())) {
                         toDoLists.remove(i);
@@ -139,6 +136,7 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
         ToDoList toDoList = new ToDoList();
         toDoList.setName(name);
         String key = mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).push().getKey();
+        toDoList.setId(key);
         mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(key).setValue(toDoList);
     }
 

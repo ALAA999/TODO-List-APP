@@ -65,7 +65,6 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
                 Task task = dataSnapshot.getValue(Task.class);
-                task.setId(dataSnapshot.getKey());
                 taskList.add(task);
                 taskListAdapter.notifyDataSetChanged();
                 binding.tasks.scrollToPosition(taskList.size() - 1);
@@ -73,13 +72,21 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
-
+                Task task = dataSnapshot.getValue(Task.class);
+                for (int i = 0; i < taskList.size(); i++) {
+                    if (taskList.get(i).getId().equals(task.getId())) {
+                        taskList.get(i).setName(task.getName());
+                        taskList.get(i).setChecked(task.isChecked());
+                        taskList.get(i).setDescription(task.getDescription());
+                        taskListAdapter.notifyItemChanged(i);
+                        break;
+                    }
+                }
             }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
                 ToDoList toDoList = dataSnapshot.getValue(ToDoList.class);
-                toDoList.setId(dataSnapshot.getKey());
                 for (int i = 0; i < taskList.size(); i++) {
                     if (taskList.get(i).getId().equals(toDoList.getId())) {
                         taskList.remove(i);
@@ -143,12 +150,18 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
         Task task = new Task();
         task.setName(name);
         String key = mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(todoListId).push().getKey();
+        task.setId(key);
         mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(todoListId).child(Constants.TASK_TABLE_NAME).child(key).setValue(task);
     }
 
 
     @Override
     public void onTaskListClicked(int position) {
+        Task task = taskList.get(position);
+        boolean isChecked = task.isChecked();
+        task.setChecked(!isChecked);
+        mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(todoListId).child(Constants.TASK_TABLE_NAME).child(task.getId()).setValue(task);
+
     }
 
     @Override

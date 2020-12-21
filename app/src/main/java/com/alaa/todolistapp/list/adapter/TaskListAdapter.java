@@ -77,9 +77,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
         @Override
         public void onClick(View view) {
             if (view.getId() == R.id.task_layout) {
-                boolean isChecked = list.get(getAdapterPosition()).isChecked();
-                list.get(getAdapterPosition()).setChecked(!isChecked);
-                notifyItemChanged(getAdapterPosition());
+//                boolean isChecked = list.get(getAdapterPosition()).isChecked();
+//                list.get(getAdapterPosition()).setChecked(!isChecked);
+//                notifyItemChanged(getAdapterPosition());
                 mOnClickListener.onTaskListClicked(getAdapterPosition());
             } else if (view.getId() == R.id.edit) {
                 context.startActivity(new Intent(context, ViewTaskActivity.class));
