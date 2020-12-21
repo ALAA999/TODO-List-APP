@@ -59,8 +59,7 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
                 ToDoList toDoList = dataSnapshot.getValue(ToDoList.class);
                 toDoLists.add(toDoList);
-                toDoListAdapter.notifyDataSetChanged();
-                binding.todoList.scrollToPosition(toDoLists.size() - 1);
+                setToDoListAdapter(toDoLists);
             }
 
             @Override
@@ -70,7 +69,7 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
                     if (toDoLists.get(i).getId().equals(toDoList.getId())) {
                         toDoLists.get(i).setName(toDoList.getName());
                         toDoLists.get(i).setTasks(toDoList.getTasks());
-                        toDoListAdapter.notifyItemChanged(i);
+                        setToDoListAdapter(toDoLists);
                         break;
                     }
                 }
@@ -82,7 +81,7 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
                 for (int i = 0; i < toDoLists.size(); i++) {
                     if (toDoLists.get(i).getId().equals(toDoList.getId())) {
                         toDoLists.remove(i);
-                        toDoListAdapter.notifyItemRemoved(i);
+                        setToDoListAdapter(toDoLists);
                         break;
                     }
                 }

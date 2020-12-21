@@ -22,12 +22,14 @@ import java.util.List;
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHolder> {
 
     final private ListItemClickListener mOnClickListener;
-    Context context;
-    List<Task> list;
+    private Context context;
+    private List<Task> list;
+    private String todoListId;
 
-    public TaskListAdapter(Context context, List<Task> list, ListItemClickListener mOnClickListener) {
+    public TaskListAdapter(Context context, List<Task> list, String todoListId, ListItemClickListener mOnClickListener) {
         this.context = context;
         this.list = list;
+        this.todoListId = todoListId;
         this.mOnClickListener = mOnClickListener;
     }
 
@@ -83,6 +85,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             } else if (view.getId() == R.id.edit) {
                 Intent intent = new Intent(context, ViewTaskActivity.class);
                 intent.putExtra(Constants.TASK, list.get(getAdapterPosition()));
+                intent.putExtra(Constants.TODO_LIST_ID, todoListId);
                 context.startActivity(intent);
             }
         }

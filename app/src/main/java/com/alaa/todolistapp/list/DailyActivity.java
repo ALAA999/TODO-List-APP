@@ -66,8 +66,7 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @androidx.annotation.Nullable String s) {
                 Task task = dataSnapshot.getValue(Task.class);
                 taskList.add(task);
-                taskListAdapter.notifyDataSetChanged();
-                binding.tasks.scrollToPosition(taskList.size() - 1);
+                setTaskListAdapter(taskList);
             }
 
             @Override
@@ -78,7 +77,7 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
                         taskList.get(i).setName(task.getName());
                         taskList.get(i).setChecked(task.isChecked());
                         taskList.get(i).setDescription(task.getDescription());
-                        taskListAdapter.notifyItemChanged(i);
+                        setTaskListAdapter(taskList);
                         break;
                     }
                 }
@@ -90,7 +89,7 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
                 for (int i = 0; i < taskList.size(); i++) {
                     if (taskList.get(i).getId().equals(toDoList.getId())) {
                         taskList.remove(i);
-                        taskListAdapter.notifyItemRemoved(i);
+                        setTaskListAdapter(taskList);
                         break;
                     }
                 }
@@ -110,7 +109,7 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
 
 
     private void setTaskListAdapter(List<Task> taskList) {
-        taskListAdapter = new TaskListAdapter(this, taskList, this);
+        taskListAdapter = new TaskListAdapter(this, taskList, todoListId, this);
         binding.tasks.setAdapter(taskListAdapter);
     }
 
