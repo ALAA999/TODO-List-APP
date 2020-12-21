@@ -34,15 +34,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Meet with client" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/rounded_edittext_shape"
-        android:backgroundTint="@color/orange"
-        android:foreground="?selectableItemBackground"
         android:text="@string/edit"
-        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

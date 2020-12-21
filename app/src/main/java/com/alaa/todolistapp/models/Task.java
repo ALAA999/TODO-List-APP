@@ -1,6 +1,8 @@
 package com.alaa.todolistapp.models;
 
-public class Task {
+import java.io.Serializable;
+
+public class Task implements Serializable {
 
     private String id;
     private String name;

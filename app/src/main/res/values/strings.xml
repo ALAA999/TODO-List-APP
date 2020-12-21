@@ -28,4 +28,6 @@
     <string name="tasks">%1$d tasks</string>
     <string name="view_task">View task</string>
     <string name="edit">Edit</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
 </resources>

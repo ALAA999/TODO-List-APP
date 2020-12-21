@@ -12,11 +12,10 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alaa.todolistapp.R;
+import com.alaa.todolistapp.common.Constants;
 import com.alaa.todolistapp.databinding.ItemTaskListBinding;
-import com.alaa.todolistapp.databinding.ItemTodoListBinding;
 import com.alaa.todolistapp.list.ViewTaskActivity;
 import com.alaa.todolistapp.models.Task;
-import com.alaa.todolistapp.models.ToDoList;
 
 import java.util.List;
 
@@ -82,7 +81,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
 //                notifyItemChanged(getAdapterPosition());
                 mOnClickListener.onTaskListClicked(getAdapterPosition());
             } else if (view.getId() == R.id.edit) {
-                context.startActivity(new Intent(context, ViewTaskActivity.class));
+                Intent intent = new Intent(context, ViewTaskActivity.class);
+                intent.putExtra(Constants.TASK, list.get(getAdapterPosition()));
+                context.startActivity(intent);
             }
         }
     }
