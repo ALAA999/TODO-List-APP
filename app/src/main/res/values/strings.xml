@@ -2,6 +2,7 @@
     <string name="app_name">TODO List APP</string>
     <string name="things_to_do">Things ToDo</string>
     <string name="next_underlined"><u>next</u></string>
+    <string name="logout_underlined"><u>Logout</u></string>
     <string name="sign_up_title">Create profile to start your first ToDo List</string>
     <string name="your_name">your name</string>
     <string name="your_email_address">your email address</string>
@@ -30,4 +31,7 @@
     <string name="edit">Edit</string>
     <string name="description">Description</string>
     <string name="save">Save</string>
+    <string name="enter_email_to_reset_password">Enter your email to reset your password</string>
+    <string name="reset_password">Reset password</string>
+    <string name="result">Result</string>
 </resources>

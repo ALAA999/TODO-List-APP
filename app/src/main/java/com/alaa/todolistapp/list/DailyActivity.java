@@ -174,10 +174,7 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         searchedTaskList.clear();
-        if (charSequence.equals("")) {
-            setTaskListAdapter(taskList);
-            return;
-        }
+        binding.listName.setText(getString(R.string.result));
         for (int j = 0; j < taskList.size(); j++) {
             if (taskList.get(j).getName().contains(charSequence)) {
                 searchedTaskList.add(taskList.get(j));
@@ -188,5 +185,8 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void afterTextChanged(Editable editable) {
+        if (editable.length() == 0) {
+            binding.listName.setText(todoListName);
+        }
     }
 }

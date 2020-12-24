@@ -44,6 +44,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final Task task = list.get(i);
         viewHolder.binding.name.setText(task.getName());
+        viewHolder.binding.type.setText(task.getType());
         if (task.isChecked()) {
             viewHolder.binding.name.setPaintFlags(viewHolder.binding.name.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             viewHolder.binding.checkImage.setImageResource(R.drawable.checkbox_checked);
@@ -72,17 +73,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             super(binding.getRoot());
             this.binding = binding;
             this.binding.taskLayout.setOnClickListener(this);
-            this.binding.edit.setOnClickListener(this);
+            this.binding.checkImage.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            if (view.getId() == R.id.task_layout) {
-//                boolean isChecked = list.get(getAdapterPosition()).isChecked();
-//                list.get(getAdapterPosition()).setChecked(!isChecked);
-//                notifyItemChanged(getAdapterPosition());
+            if (view.getId() == R.id.check_image) {
                 mOnClickListener.onTaskListClicked(getAdapterPosition());
-            } else if (view.getId() == R.id.edit) {
+            } else if (view.getId() == R.id.task_layout) {
                 Intent intent = new Intent(context, ViewTaskActivity.class);
                 intent.putExtra(Constants.TASK, list.get(getAdapterPosition()));
                 intent.putExtra(Constants.TODO_LIST_ID, todoListId);

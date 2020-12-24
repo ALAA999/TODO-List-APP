@@ -12,7 +12,9 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import com.alaa.todolistapp.MainActivity;
 import com.alaa.todolistapp.R;
+import com.alaa.todolistapp.auth.LogInActivity;
 import com.alaa.todolistapp.common.BaseActivity;
 import com.alaa.todolistapp.common.Constants;
 import com.alaa.todolistapp.databinding.ActivityListBinding;
@@ -44,7 +46,9 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
         super.onCreate(savedInstanceState);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        binding.toolbar.logout.setVisibility(View.VISIBLE);
         binding.toolbar.back.setOnClickListener(this);
+        binding.toolbar.logout.setOnClickListener(this);
         binding.createList.setOnClickListener(this);
         binding.listSearch.addTextChangedListener(this);
         binding.toolbar.pageTitle.setText(getString(R.string.lists_todo));
@@ -110,6 +114,11 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
             onBackPressed();
         } else if (view.getId() == R.id.create_list) {
             showNewListDialog();
+        } else if (view.getId() == R.id.logout) {
+            AppController.getInstance().getAppPreferences().clean();
+            Intent intent = new Intent(this, LogInActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
     }
 
@@ -156,10 +165,6 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         searchedToDoList.clear();
-        if (charSequence.equals("")) {
-            setToDoListAdapter(toDoLists);
-            return;
-        }
         for (int j = 0; j < toDoLists.size(); j++) {
             if (toDoLists.get(j).getName().contains(charSequence)) {
                 searchedToDoList.add(toDoLists.get(j));

@@ -26,7 +26,7 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
 
         mAuth = FirebaseAuth.getInstance();
-        super.setOnClickListeners(new View[]{binding.login, binding.createProfile}, this);
+        super.setOnClickListeners(new View[]{binding.login, binding.createProfile, binding.forgetPassword}, this);
     }
 
     @Override
@@ -37,6 +37,8 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
             if (UIUtil.EditTextsFilled(new EditText[]{binding.email, binding.password}, this)) {
                 login(binding.email.getText().toString(), binding.password.getText().toString());
             }
+        } else if (view.getId() == R.id.forget_password) {
+            startActivity(new Intent(this, ForgetPasswordActivity.class));
         }
     }
 

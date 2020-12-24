@@ -10,6 +10,8 @@ import com.alaa.todolistapp.auth.LogInActivity;
 import com.alaa.todolistapp.auth.SignUpActivity;
 import com.alaa.todolistapp.common.BaseActivity;
 import com.alaa.todolistapp.databinding.ActivityMainBinding;
+import com.alaa.todolistapp.list.ListActivity;
+import com.alaa.todolistapp.utils.AppController;
 
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -28,7 +30,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.next) {
-            startActivity(new Intent(this, LogInActivity.class));
+            if (AppController.getInstance().getAppPreferences().getUserUId().isEmpty()) {
+                startActivity(new Intent(this, LogInActivity.class));
+            } else {
+                startActivity(new Intent(this, ListActivity.class));
+            }
             finish();
         }
     }
