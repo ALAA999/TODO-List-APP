@@ -10,6 +10,7 @@ import com.alaa.todolistapp.common.Constants;
 import com.alaa.todolistapp.databinding.ActivityViewTaskBinding;
 import com.alaa.todolistapp.models.Task;
 import com.alaa.todolistapp.utils.AppController;
+import com.alaa.todolistapp.utils.DateUtil;
 import com.alaa.todolistapp.utils.UIUtil;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -35,6 +36,7 @@ public class ViewTaskActivity extends BaseActivity implements View.OnClickListen
         binding.toolbar.save.setVisibility(View.VISIBLE);
         binding.taskName.setText(task.getName());
         binding.description.setText(task.getDescription());
+        binding.time.setText(DateUtil.getDate(task.getTime()));
     }
 
     @Override

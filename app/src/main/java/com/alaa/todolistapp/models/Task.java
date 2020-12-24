@@ -8,6 +8,7 @@ public class Task implements Serializable {
     private String name;
     private boolean isChecked;
     private String description;
+    private long time;
 
     public Task() {
 
@@ -45,13 +46,11 @@ public class Task implements Serializable {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", isChecked=" + isChecked +
-                ", description='" + description + '\'' +
-                '}';
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

@@ -39,7 +39,7 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
     private List<Task> taskList = new ArrayList<>(), searchedTaskList = new ArrayList<>();
     private TaskListAdapter taskListAdapter;
     private DatabaseReference mDatabase;
-    private String todoListId;
+    private String todoListId, todoListName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,8 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         todoListId = getIntent().getStringExtra(Constants.TODO_LIST_ID);
+        todoListName = getIntent().getStringExtra(Constants.TODO_LIST_NAME);
+        binding.listName.setText(todoListName);
         binding.toolbar.back.setOnClickListener(this);
         binding.createTask.setOnClickListener(this);
         binding.toolbar.search.setOnClickListener(this);
@@ -147,6 +149,7 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
 
     public void pushTaskToFirebase(String name) {
         Task task = new Task();
+        task.setTime(System.currentTimeMillis() / 1000);
         task.setName(name);
         String key = mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(todoListId).push().getKey();
         task.setId(key);

@@ -143,6 +143,7 @@ public class ListActivity extends BaseActivity implements View.OnClickListener, 
     public void onToDoListClicked(int position) {
         Intent intent = new Intent(this, DailyActivity.class);
         intent.putExtra(Constants.TODO_LIST_ID, toDoLists.get(position).getId());
+        intent.putExtra(Constants.TODO_LIST_NAME, toDoLists.get(position).getName());
         startActivity(intent);
     }
 
