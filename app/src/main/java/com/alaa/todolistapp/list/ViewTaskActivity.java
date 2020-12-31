@@ -35,6 +35,7 @@ public class ViewTaskActivity extends BaseActivity implements View.OnClickListen
         binding.toolbar.pageTitle.setText(getString(R.string.view_task));
         binding.toolbar.save.setVisibility(View.VISIBLE);
         binding.taskName.setText(task.getName());
+        binding.taskType.setText(task.getType());
         binding.description.setText(task.getDescription());
         binding.time.setText(DateUtil.getDate(task.getTime()));
     }
@@ -49,6 +50,7 @@ public class ViewTaskActivity extends BaseActivity implements View.OnClickListen
         } else if (view.getId() == R.id.save) {
             if (UIUtil.EditTextsFilled(new EditText[]{binding.taskName}, this)) {
                 task.setName(binding.taskName.getText().toString());
+                task.setType(binding.taskType.getText().toString());
                 task.setDescription(binding.description.getText().toString());
                 mDatabase.child(Constants.TODO_TABLE_NAME).child(AppController.getInstance().getAppPreferences().getUserUId()).child(todoListId).child(Constants.TASK_TABLE_NAME).child(task.getId()).setValue(task);
                 onBackPressed();

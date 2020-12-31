@@ -1,24 +1,19 @@
 package com.alaa.todolistapp.list;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 
 import com.alaa.todolistapp.R;
 import com.alaa.todolistapp.common.BaseActivity;
 import com.alaa.todolistapp.common.Constants;
 import com.alaa.todolistapp.databinding.ActivityDailyBinding;
-import com.alaa.todolistapp.databinding.ActivityListBinding;
 import com.alaa.todolistapp.list.adapter.TaskListAdapter;
-import com.alaa.todolistapp.list.adapter.ToDoListAdapter;
 import com.alaa.todolistapp.models.Task;
 import com.alaa.todolistapp.models.ToDoList;
 import com.alaa.todolistapp.utils.AppController;
@@ -28,7 +23,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +73,7 @@ public class DailyActivity extends BaseActivity implements View.OnClickListener,
                         taskList.get(i).setName(task.getName());
                         taskList.get(i).setChecked(task.isChecked());
                         taskList.get(i).setDescription(task.getDescription());
+                        taskList.get(i).setType(task.getType());
                         setTaskListAdapter(taskList);
                         break;
                     }
