@@ -4,9 +4,6 @@ package com.alaa.todolistapp.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.firebase.auth.FirebaseUser;
-import com.google.gson.Gson;
-
 public class AppPreferences {
 
     public final static String USER_UID = "user_uid";
